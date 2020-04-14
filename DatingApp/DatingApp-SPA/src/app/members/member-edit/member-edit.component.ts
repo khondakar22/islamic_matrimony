@@ -15,6 +15,7 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', {static: true}) editForm: NgForm;
   user: User;
   photoUrl: string;
+  live = true;
   @HostListener('window:beforeunload', ['$event'])
   unLoadNotification($event: any) {
     if (this.editForm.dirty) {

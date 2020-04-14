@@ -14,6 +14,7 @@ import {NgxGalleryAnimation} from '@kolkov/ngx-gallery';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
+  live = true;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   constructor(
