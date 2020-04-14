@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertifyService } from 'src/app/services/alertify/alertify.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
+import { User } from 'src/app/models/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,18 +13,37 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter<any>();
-  model: any = {};
+  user: User;
+  colorTheme = 'theme-red';
+  bsConfig: Partial<BsDatepickerConfig>;
 
   registerForm: FormGroup;
 
-  constructor(private authService: AuthService, private alertify: AlertifyService) {}
+  constructor(private authService: AuthService,
+              private alertify: AlertifyService,
+              private fb: FormBuilder,
+              private router: Router) {}
 
   ngOnInit() {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      confirmPassword: new FormControl('', Validators.required),
-    }, this.passwordMatchValidator);
+  this.applyTheme();
+  this.createRegisterForm();
+  }
+
+  applyTheme() {
+    this.bsConfig = Object.assign({}, { containerClass: this.colorTheme });
+  }
+
+  createRegisterForm() {
+    this.registerForm = this.fb.group({
+      gender: ['male'],
+      username: ['', Validators.required],
+      knownAs: ['', Validators.required],
+      dateOfBirth: [null, Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)] ],
+      confirmPassword: ['', Validators.required]
+    }, {validators: this.passwordMatchValidator});
   }
 
   passwordMatchValidator(g: FormGroup) {
@@ -29,12 +51,18 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // this.authService.register(this.model).subscribe(() => {
-    //   this.alertify.success('Registration Successfull');
-    // }, error => {
-    //   this.alertify.error(error);
-    // });
-    console.log(this.registerForm.value);
+    if (this.registerForm.valid) {
+      this.user = Object.assign({}, this.registerForm.value);
+      this.authService.register(this.user).subscribe(() => {
+        this.alertify.success('Registration Successful');
+      }, error => {
+        this.alertify.error(error);
+      }, () => {
+        this.authService.login(this.user).subscribe(() => {
+          this.router.navigate(['/members']);
+        });
+      } );
+    }
   }
 
   cancel() {
