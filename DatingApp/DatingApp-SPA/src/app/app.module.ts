@@ -21,13 +21,14 @@ import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './app.routes';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './resolver/member-detail.resolver';
 import { MemberListResolver } from './resolver/member-list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './resolver/member-edit.resolver';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
-
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
@@ -46,6 +47,8 @@ export function tokenGetter() {
       TabsModule.forRoot(),
       BsDatepickerModule.forRoot(),
       TimeagoModule.forRoot(),
+      PaginationModule.forRoot(),
+      ButtonsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
          config: {
