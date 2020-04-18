@@ -29,6 +29,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberEditResolver } from './resolver/member-edit.resolver';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ListsResolver } from './resolver/lists.resolver';
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
@@ -75,7 +76,8 @@ export function tokenGetter() {
       ErrorInterceptorProvider,
       MemberDetailResolver,
       MemberListResolver,
-      MemberEditResolver
+      MemberEditResolver,
+      ListsResolver
    ],
    bootstrap: [
       AppComponent
