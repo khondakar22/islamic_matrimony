@@ -18,7 +18,7 @@ namespace DatingApp.API.Data
     protected override void OnModelCreating(ModelBuilder builder)
     {
       builder.Entity<Like>()
-      .HasKey(k => new { k.LikeeId, k.LikerId });
+      .HasKey(k => new { k.LikerId, k.LikeeId });
 
       builder.Entity<Like>()
       .HasOne(u => u.Likee)
@@ -28,7 +28,7 @@ namespace DatingApp.API.Data
 
       builder.Entity<Like>()
         .HasOne(u => u.Liker)
-        .WithMany(u => u.Likee)
+        .WithMany(u => u.Likees)
         .HasForeignKey(u => u.LikerId)
         .OnDelete(DeleteBehavior.Restrict);
     }

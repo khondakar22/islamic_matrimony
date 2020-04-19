@@ -33,9 +33,11 @@ export class ListComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, null, this.likesParam).subscribe((res: PaginatedResult<User[]> ) => {
       this.users = res.result;
+      this.pagination = res.pagination;
     }, error  => {
       this.alertify.error(error);
     });
+
   }
 
   pageChanged(event: any): void  {

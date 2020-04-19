@@ -36,6 +36,7 @@ export class UserService {
   return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
      map(response => {
        paginatedResult.result = response.body;
+       console.log('UserService -> constructor -> response.body', response.headers.get('Pagination'));
 
        if (response.headers.get('Pagination') != null) {
          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
